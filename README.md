@@ -20,7 +20,7 @@ When API gets a request to create a new TES task, TESK performs following steps:
 8. Outputs Filer upload output files from PVC to external storage (currently FTP) and finishes.
 9. Taskmaster deletes PVC and finishes.
 ### Getting task details
-When API gets a request to get details of a single task or a list of tasks, than it calls Kubernetes API endpoints, to retrieve: K8s Job objects corresponding to Taskmaster, Executors and Filers (of a single task or a list of tasks) and K8s Pod objects created by those Jobs. It also gets taskmaster's and executors' pod logs. Matching API objects (Jobs and Pods) and TES tasks heavily relies on the use of K8s [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). After retrieving all needed objects API uses its own logic to combine them in TES task details response. 
+When API gets a request to get details of a single task or a list of tasks, than it calls Kubernetes API endpoints, to retrieve: K8s Job objects corresponding to Taskmaster, Executors and Filers (of a single task or a list of tasks) and K8s Pod objects created by those Jobs. It also gets taskmaster's and executors' pod logs. Matching API objects (Jobs and Pods) and TES tasks heavily relies on the use of K8s [labels](https://kubernetes.io/docs/concepts/overview/working-with-objects/labels/). After retrieving all needed objects API uses its own logic to combine them in TES task details response.
 ### Cancelling a task
 When API gets a request to cancel a task, it labels both Taskmaster's Job and Pod objects with cancelled status. API then uses Job label to determine task's CANCELED status. Pod's label gets populated to Downward API file, which changes Taskmaster listens to. If Taskmaster detects a change in labels, it stops an execution of a currently running  executor and finishes.
 ### Authentication and authorisation
@@ -63,14 +63,16 @@ The meaning of environment variables:
  ------------ | -------------
  `TESK_API_TASKMASTER_SERVICE_ACCOUNT_NAME` | Service account with which each new taskmaster job will be created. Needs to have sufficient privileges granted (default `edit` role can be used). If not set, defaults to `default`.
  `TESK_API_TASKMASTER_IMAGE_VERSION` | Version of taskmaster image, the API will use, when creating new taskmaster jobs. If not set, should default to stable version of taskmaster.
+ `TESK_API_TASKMASTER_IMAGE_NAME` | Name of the taskmaster image, the API will use, when creating new taskmaster jobs. If not set, should defalt to stable version of taskmaster.
  `TESK_API_TASKMASTER_FILER_IMAGE_VERSION` | Version of filer image, passed on as a parameter to taskmaster. Taskmaster will create Inputs/Outputs filer using the image in this version. If omitted, should default to latest stable version.
+ `TESK_API_TASKMASTER_FILER_IMAGE_NAME` | Name of filer image, passed on as a parameter to taskmaster. Taskmaster will create Inputs/Outputs filer using the image in this version. If omitted, should default to latest stable version.
  `TESK_API_K8S_NAMESPACE` | K8s namespace, where all the Job objects will be created. If omitted, defaults to `default`.
  `TESK_API_TASKMASTER_FTP_SECRET_NAME` | Name of K8s secret storing credentials to a single FTP account. FTP account is used to demonstrate uploading output files to external storage. If ENV variable is set, FTP username and password will be included by API as taskmaster ENV variables. Otherwise (TESK_API_TASKMASTER_FTP_SECRET_NAME env variable not set), TESK should still work, but without the ability to upload files to a private FTP server.
  `SPRING_PROFILES_ACTIVE` | (default) `noauth` - authN/Z switched off. `auth` - authN/Z switched on.
  `TESK_API_AUTHORISATION_*` | A set of env variables configuring authorisation using Elixir group membership
  `TESK_API_SWAGGER_OAUTH_*` | A set of env variables configuring OAuth2/OIDC client built in Swagger UI
- 
- 
+
+
 ### Generating new API version stub
 Current version of TES specification (v0.3) lives locally in the project as a [Swagger JSON file](/src/main/resources/task_execution.swagger.json). In case of the specification upgrade, this file needs to be replaced with a new version. Then you need to run
 

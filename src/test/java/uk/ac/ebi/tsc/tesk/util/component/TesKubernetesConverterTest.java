@@ -52,6 +52,7 @@ import static uk.ac.ebi.tsc.tesk.util.constant.Constants.LABEL_TASKSTATE_VALUE_C
 @TestPropertySource(locations = {"classpath:application.properties"},
         properties = {"tesk.api.taskmaster.image-name = task-full-image-name",
                 "tesk.api.taskmaster.image-version = task-full-image-version",
+                "tesk.api.taskmaster.filer-image-name = task-full-filer-image-name",
                 "tesk.api.taskmaster.filer-image-version = task-full-filer-image-version",
                 "tesk.api.taskmaster.ftp.secret-name = secretstorage",
                 "tesk.api.taskmaster.service-account-name = custom-service-account",
