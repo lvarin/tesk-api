@@ -66,6 +66,11 @@ public class KubernetesObjectsSupplier {
                     .addArgsItem("-fv").addArgsItem(this.taskmasterEnvProperties.getFilerImageVersion());
 
 
+            if (this.taskmasterEnvProperties.getStorageClass() != null) {
+                taskmasterContainer.addArgsItem("-sc")
+                        .addArgsItem(this.taskmasterEnvProperties.getStorageClass());
+            }
+
             if (this.taskmasterEnvProperties.isDebug()) {
                 taskmasterContainer.addArgsItem("-d")
                         .setImagePullPolicy("Always");

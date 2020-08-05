@@ -33,6 +33,12 @@ public class TaskmasterEnvProperties {
      * Filer image version
      */
     private String filerImageVersion;
+
+    /**
+     * Storage class
+     */
+    private String storageClass;
+
     /**
      * Test FTP account settings
      */
@@ -88,6 +94,14 @@ public class TaskmasterEnvProperties {
 
     public void setFilerImageVersion(String filerImageVersion) {
         this.filerImageVersion = filerImageVersion;
+    }
+
+    public String getStorageClass() {
+        return this.storageClass;
+    }
+
+    public void setStorageClass(String storageClass) {
+        this.storageClass = storageClass;
     }
 
     public String getImageVersion() {
